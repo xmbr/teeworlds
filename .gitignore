@@ -1,3 +1,5 @@
+*.gem
 m.rb
 *.swp
 *~
+Gemfile.lock

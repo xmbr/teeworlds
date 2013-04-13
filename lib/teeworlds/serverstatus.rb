@@ -22,7 +22,7 @@ module Teeworlds
       udp.connect(@server, @port)
       udp.send("\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\x67\x69\x65\x33\x00", 0)
       #raise "Can't receive from server." unless select([udp], nil, nil, 1)
-      udp.recvfrom(1024).first.split("\x00")[1..-1] 
+      udp.recvfrom(1024).first.split("\x00")[1..-1]
     end
 
     def parse_players
