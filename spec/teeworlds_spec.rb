@@ -1,6 +1,6 @@
-require_relative '../tw'
+require 'spec_helper'
 
-describe TW::MasterServer do
+describe Teeworlds::MasterServer do
   before do
     master_5_servers = [File.open('spec/fixtures/master_5_servers', 'r:ASCII-8BIT').read]
     @socket_mock = mock
@@ -14,13 +14,13 @@ describe TW::MasterServer do
 
   describe '.new' do
     it 'should connect to masterservers 1-4' do
-      TW::MasterServer.new
+      Teeworlds::MasterServer.new
     end
   end
 
   describe '#servers' do
     it 'should return 5 servers' do
-      ms = TW::MasterServer.new
+      ms = Teeworlds::MasterServer.new
 
       ms.servers.should == [
         { ip: '88.198.182.255', port: 9123 },
@@ -33,10 +33,10 @@ describe TW::MasterServer do
   end
 end
 
-describe TW::ServerStatus do
+describe Teeworlds::ServerStatus do
   context 'when connection failed' do
     it 'raises Errno::ECONNREFUSED if could not connect to server' do
-      expect { TW::ServerStatus.new('127.0.0.1', 6666) }.to raise_error(Errno::ECONNREFUSED)
+      expect { Teeworlds::ServerStatus.new('127.0.0.1', 6666) }.to raise_error(Errno::ECONNREFUSED)
     end
   end
 
@@ -50,8 +50,8 @@ describe TW::ServerStatus do
       #UDPSocket.should_receive(:new).and_return(@socket_mock)
     end
 
-    let(:tw_server) { TW::ServerStatus.new('127.0.0.1', 8500) }
-    let(:tw_server_no_port) { TW::ServerStatus.new('127.0.0.1') }
+    let(:tw_server) { Teeworlds::ServerStatus.new('127.0.0.1', 8500) }
+    let(:tw_server_no_port) { Teeworlds::ServerStatus.new('127.0.0.1') }
 
     describe '.new' do
       it 'should connect to requested server and port' do
