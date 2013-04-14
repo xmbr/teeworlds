@@ -18,7 +18,22 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+    ms = Teeworlds::MasterServer.new
+
+    ms.servers.each do |tw|
+      puts "#{tw.server}: #{tw.port}"
+    end
+
+    s = ms.servers.first
+    s.connect
+
+    puts "Server name: #{s.name}, map: #{s.map}, type: #{s.gametype}"
+    puts "Num clients: #{s.num_clients}"
+    puts "Max clients: #{s.max_clients}"
+    puts "Num player: #{s.num_players}"
+    puts "Max player: #{s.max_players}"
+
+    s.players.each { |player| puts player }
 
 ## Contributing
 
