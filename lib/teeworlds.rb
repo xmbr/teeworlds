@@ -6,4 +6,4 @@ end
 
 require 'teeworlds/version'
 require 'teeworlds/masterserver'
-require 'teeworlds/serverstatus'
+require 'teeworlds/server'

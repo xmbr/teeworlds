@@ -19,24 +19,28 @@ describe Teeworlds::MasterServer do
   end
 
   describe '#servers' do
+    it 'should be an array of Teeworlds::Server' do
+      Teeworlds::MasterServer.new.servers.each do |server|
+        server.should be_a(Teeworlds::Server)
+      end
+    end
+
     it 'should return 5 servers' do
       ms = Teeworlds::MasterServer.new
 
-      ms.servers.should == [
-        { ip: '88.198.182.255', port: 9123 },
-        { ip: '109.73.50.121',  port: 9016 },
-        { ip: '46.38.237.106',  port: 8308 },
-        { ip: '188.233.98.250', port: 8303 },
-        { ip: '217.29.118.189', port: 8202 }
-      ]
+      [ms.servers[0].server, ms.servers[0].port].should ==  ['88.198.182.255', 9123]
+      [ms.servers[1].server, ms.servers[1].port].should ==  ['109.73.50.121',  9016]
+      [ms.servers[2].server, ms.servers[2].port].should ==  ['46.38.237.106', 8308]
+      [ms.servers[3].server, ms.servers[3].port].should ==  ['188.233.98.250', 8303]
+      [ms.servers[4].server, ms.servers[4].port].should ==  ['217.29.118.189', 8202]
     end
   end
 end
 
-describe Teeworlds::ServerStatus do
+describe Teeworlds::Server do
   context 'when connection failed' do
     it 'raises Errno::ECONNREFUSED if could not connect to server' do
-      expect { Teeworlds::ServerStatus.new('127.0.0.1', 6666) }.to raise_error(Errno::ECONNREFUSED)
+      expect { Teeworlds::Server.new(server: '127.0.0.1', port: 6666).connect }.to raise_error(Errno::ECONNREFUSED)
     end
   end
 
@@ -50,23 +54,27 @@ describe Teeworlds::ServerStatus do
       #UDPSocket.should_receive(:new).and_return(@socket_mock)
     end
 
-    let(:tw_server) { Teeworlds::ServerStatus.new('127.0.0.1', 8500) }
-    let(:tw_server_no_port) { Teeworlds::ServerStatus.new('127.0.0.1') }
+    let(:tw_server) { Teeworlds::Server.new(server: '127.0.0.1', port: 8500) }
+    let(:tw_server_no_port) { Teeworlds::Server.new(server: '127.0.0.1') }
 
     describe '.new' do
       it 'should connect to requested server and port' do
         @socket_mock.should_receive(:connect).with('127.0.0.1', 8500)
-        tw_server
+        tw_server.connect
       end
 
       it "should connect to default port if none is given" do
         @socket_mock.should_receive(:connect).with('127.0.0.1', 8303)
-        tw_server_no_port
+        tw_server_no_port.connect
       end
     end
 
     describe 'instance method' do
-      before { @socket_mock.should_receive(:connect).with('127.0.0.1', 8500) }
+      before do
+        @socket_mock.should_receive(:connect).with('127.0.0.1', 8500)
+        tw_server.connect
+      end
+
       subject { tw_server }
 
       describe '#version' do
