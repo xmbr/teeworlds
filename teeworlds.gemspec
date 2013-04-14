@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["m.borosiewicz@gmail.com"]
   spec.description   = %q{Teeworlds is a multiplayer shooter. This gem allows you to fetch all available game servers and view current status of each.}
   spec.summary       = %q{Classes to parse Teeworlds servers.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/xmbr/teeworlds"
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
