@@ -24,7 +24,7 @@ module Teeworlds
     end
 
     def parse_servers(servers_raw)
-      servers_raw.bytes[14..-1].each_slice(18) do |s|
+      servers_raw.bytes.to_a[14..-1].each_slice(18) do |s|
         sp = s.pack('C*').unpack('@12C4n')
         @servers.push Teeworlds::Server.new(server: sp[0..3].join('.'), port: sp.last)
       end
